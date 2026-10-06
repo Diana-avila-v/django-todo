@@ -10,10 +10,11 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """Return all the latest todos."""
         return Todo.objects.order_by('-created_at')
-
+    
 def add(request):
-    title = request.POST['title']
-    Todo.objects.create(title=title)
+    title = request.POST.get('title', '').strip()
+    if title:
+        Todo.objects.create(title=title)
 
     return redirect('todos:index')
 
